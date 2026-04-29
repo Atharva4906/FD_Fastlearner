@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery Dynamic Form</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            padding-top: 50px;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+
+        /* The input group is initially hidden so jQuery can animate its entrance */
+        .input-group {
+            display: none; 
+            margin-bottom: 15px;
+        }
+
+        /* Flexbox ensures the input and button align neatly side-by-side */
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.8;
+        }
+
+        .btn-add {
+            background-color: #28a745;
+            color: white;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .btn-remove {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-submit {
+            background-color: #007bff;
+            color: white;
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Team Members</h2>
+        
+        <button type="button" class="btn btn-add" id="addFieldBtn">+ Add Member</button>
+
+        <form id="dynamicForm">
+            <div id="fieldWrapper"></div>
+
+            <button type="submit" class="btn btn-submit">Submit Form</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            
+            // 1. Add Field Logic
+            $('#addFieldBtn').click(function(e) {
+                e.preventDefault();
+                
+                // Construct the HTML for the new field
+                // Note: The parent div has the class 'input-group' which is set to display: none in CSS
+                const fieldHTML = `
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <input type="text" name="members[]" placeholder="Enter name..." required>
+                            <button type="button" class="btn btn-remove">Remove</button>
+                        </div>
+                    </div>
+                `;
+                
+                // Append the HTML to the wrapper and use slideDown for the animation
+                const $newField = $(fieldHTML);
+                $('#fieldWrapper').append($newField);
+                $newField.slideDown('fast'); 
+            });
+
+            // 2. Remove Field Logic (Using Event Delegation)
+            $('#fieldWrapper').on('click', '.btn-remove', function() {
+                // Find the closest parent with the class 'input-group'
+                // Slide it up, and once the animation is complete, remove it from the DOM entirely
+                $(this).closest('.input-group').slideUp('fast', function() {
+                    $(this).remove();
+                });
+            });
+
+            // 3. Handle Form Submission
+            $('#dynamicForm').submit(function(e) {
+                e.preventDefault();
+                
+                // .serializeArray() gathers all input data into a neat array of objects
+                const formData = $(this).serializeArray();
+                
+                if (formData.length === 0) {
+                    alert("Please add at least one member before submitting.");
+                    return;
+                }
+
+                console.log('Form Data Submitted:', formData);
+                alert('Success! Check your browser console to see the serialized data.');
+            });
+
+            // Optional: Automatically click the add button once on load so the form isn't empty
+            $('#addFieldBtn').click();
+        });
+    </script>
+</body>
+</html>

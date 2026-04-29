@@ -1,0 +1,55 @@
+/* General page styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background: #f4f6f9;
+  color: #333;
+}
+
+/* Heading */
+h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+/* Navigation links */
+a[routerLink] {
+  text-decoration: none;
+  color: #3498db;
+  font-weight: bold;
+  margin: 0 10px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Hover effect */
+a[routerLink]:hover {
+  background: #3498db;
+  color: #fff;
+}
+
+/* Active link styling */
+a[routerLink].active {
+  background: #2980b9;
+  color: #fff;
+}
+
+/* Divider line */
+hr {
+  margin: 20px 0;
+  border: none;
+  border-top: 2px solid #ddd;
+}
+
+/* Router outlet container */
+router-outlet {
+  display: block;
+  margin-top: 20px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}

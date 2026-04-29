@@ -1,0 +1,42 @@
+<div class="container" style="max-width: 600px; margin: 20px auto; font-family: sans-serif;">
+  <h2>Task Dashboard</h2>
+
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" style="display: flex; gap: 10px; margin-bottom: 20px;">
+    <input 
+      type="text" 
+      formControlName="title" 
+      placeholder="Task Name" 
+      style="flex: 1; padding: 8px;"
+    >
+    <select formControlName="status" style="padding: 8px;">
+      <option value="Pending">Pending</option>
+      <option value="Completed">Completed</option>
+    </select>
+    <button type="submit" [disabled]="taskForm.invalid" style="padding: 8px 16px;">
+      {{ editingTaskId ? 'Update' : 'Add' }}
+    </button>
+  </form>
+
+  <table style="width: 100%; border-collapse: collapse; text-align: left;">
+    <thead>
+      <tr style="border-bottom: 2px solid #ccc;">
+        <th style="padding: 10px;">Title</th>
+        <th style="padding: 10px;">Status</th>
+        <th style="padding: 10px;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of tasks" style="border-bottom: 1px solid #eee;">
+        <td style="padding: 10px;">{{ task.title }}</td>
+        <td style="padding: 10px;">{{ task.status }}</td>
+        <td style="padding: 10px;">
+          <button (click)="editTask(task)" style="margin-right: 5px;">Edit</button>
+          <button (click)="deleteTask(task.id)">Delete</button>
+        </td>
+      </tr>
+      <tr *ngIf="tasks.length === 0">
+        <td colspan="3" style="padding: 10px; text-align: center; color: #666;">No tasks found.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
